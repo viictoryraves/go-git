@@ -19,7 +19,7 @@ func main() {
 		wd, _ := os.Getwd()
 		fmt.Printf("Initialized empty ugit repository in %s/%s", wd, data.GogitDir)
 	case "hash-object":
-		if os.Args[2] == "" {
+		if len(os.Args) < 3 {
 			panic("The path argument is missing")
 		}
 		data.HashObject(os.Args[2])
