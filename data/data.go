@@ -5,6 +5,7 @@ package data
 
 import (
 	"crypto/sha1"
+	"encoding/hex"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -25,11 +26,25 @@ func HashObject(path string) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("The file content is: %s", string(data))
+	fmt.Printf("The file content is: %s \n", string(data))
 
 	// Hash uses bytes and no idea what is Write about
 	h := sha1.New()
 	h.Write(data)
 	bs := h.Sum(nil)
-	fmt.Printf("Hash of file path: %s is: %x", filepath.Base(path), bs)
+	fmt.Printf("Hash of file path: %s is: %x \n", filepath.Base(path), bs)
+
+	// Write content hashed within .gogit/objects
+	path = filepath.Join(GogitDir, "object", hex.EncodeToString(bs))
+	err = os.Mkdir(filepath.Dir(path), 0o755)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("The path is: %s \n", path)
+
+	err = os.WriteFile(path, data, 0o664)
+	if err != nil {
+		fmt.Print("Object could not be created")
+		panic(err)
+	}
 }
