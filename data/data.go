@@ -24,5 +24,5 @@ func HashObject(path string) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("The file content is %s", string(data))
+	fmt.Printf("The file content is: %s", string(data))
 }
