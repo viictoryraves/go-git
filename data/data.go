@@ -31,7 +31,7 @@ func HashObject(path string) {
 	// Hash uses bytes and no idea what is Write about
 	h := sha1.New()
 	h.Write(data)
-	bs := h.Sum(nil)
+	bs := h.Sum(nil) // this is needed to create hex
 	fmt.Printf("Hash of file path: %s is: %x \n", filepath.Base(path), bs)
 
 	// Write content hashed within .gogit/objects
