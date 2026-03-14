@@ -4,6 +4,7 @@ package data
 // that will happen in go-git
 
 import (
+	"crypto/sha1"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -25,4 +26,10 @@ func HashObject(path string) {
 		panic(err)
 	}
 	fmt.Printf("The file content is: %s", string(data))
+
+	// Hash uses bytes and no idea what is Write about
+	h := sha1.New()
+	h.Write(data)
+	bs := h.Sum(nil)
+	fmt.Printf("Hash of file path: %s is: %x", filepath.Base(path), bs)
 }
