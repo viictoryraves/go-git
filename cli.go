@@ -23,5 +23,10 @@ func main() {
 			panic("The path argument is missing")
 		}
 		data.HashObject(os.Args[2])
+	case "cat-object":
+		if len(os.Args) < 3 {
+			panic("The OID is missing")
+		}
+		data.CatObject(os.Args[2])
 	}
 }

@@ -11,7 +11,10 @@ import (
 	"path/filepath"
 )
 
-const GogitDir string = ".gogit"
+const (
+	GogitDir  string = ".gogit"
+	ObjectDir string = "object"
+)
 
 func Init() {
 	err := os.Mkdir(GogitDir, 0o755)
@@ -35,7 +38,7 @@ func HashObject(path string) {
 	fmt.Printf("Hash of file path: %s is: %x \n", filepath.Base(path), bs)
 
 	// Write content hashed within .gogit/objects
-	path = filepath.Join(GogitDir, "object", hex.EncodeToString(bs))
+	path = filepath.Join(GogitDir, ObjectDir, hex.EncodeToString(bs))
 	err = os.Mkdir(filepath.Dir(path), 0o755)
 	if err != nil {
 		panic(err)
@@ -47,4 +50,14 @@ func HashObject(path string) {
 		fmt.Print("Object could not be created")
 		panic(err)
 	}
+}
+
+func CatObject(oid string) {
+	path := filepath.Join(GogitDir, ObjectDir, oid)
+	path, _ = filepath.Localize(path)
+	data, err := os.ReadFile(path)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%s \n", string(data))
 }
