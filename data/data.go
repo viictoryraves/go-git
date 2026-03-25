@@ -13,7 +13,8 @@ import (
 
 const (
 	GogitDir  string = ".gogit"
-	ObjectDir string = "object"
+	ObjectDir string = "objects"
+	nullChar         = "golang\x00"
 )
 
 func Init() {
@@ -39,7 +40,7 @@ func HashObject(path string) {
 
 	// Write content hashed within .gogit/objects
 	path = filepath.Join(GogitDir, ObjectDir, hex.EncodeToString(bs))
-	err = os.Mkdir(filepath.Dir(path), 0o755)
+	err = os.MkdirAll(filepath.Dir(path), 0o755)
 	if err != nil {
 		panic(err)
 	}
